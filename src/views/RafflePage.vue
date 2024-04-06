@@ -1,26 +1,21 @@
 <template>
+  <PrizeForm></PrizeForm>
   <RaffleStickers></RaffleStickers>
 </template>
 
 <script>
 import RaffleStickers from "../components/RaffleStickers.vue";
+import PrizeForm from "../components/PrizeForm.vue";
 export default {
   components: {
     RaffleStickers,
-  },
-  data() {
-    return {
-      winner: false,
-    };
-  },
-  methods: {
-    participate() {
-      this.winner = true;
-    },
+    PrizeForm,
   },
 };
 </script>
 
 <style>
-/* 这里可以添加样式 */
+.el-form {
+  width: 300px;
+}
 </style>

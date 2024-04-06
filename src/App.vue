@@ -8,3 +8,11 @@ export default {
   name: "App",
 };
 </script>
+<style>
+body {
+  margin: 0;
+}
+#app {
+  min-height: 100%;
+}
+</style>
