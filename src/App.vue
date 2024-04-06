@@ -1,15 +1,10 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-  <RafflePage />
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
-
 <script>
-import RafflePage from "./components/RafflePage.vue";
-
 export default {
   name: "App",
-  components: {
-    RafflePage,
-  },
 };
 </script>
