@@ -1,7 +1,8 @@
 <template>
   <el-container class="layout-container-demo" style="height: 500px">
-    <el-header style="text-align: right; font-size: 12px">
-      <div class="toolbar">
+    <el-header>
+      <span class="toolbar">Alex Japan Store (測試版v1.0)</span>
+      <!-- <div class="toolbar">
         <el-dropdown>
           <el-icon
             :size="20"
@@ -9,16 +10,16 @@
             style="margin-right: 8px; margin-top: 1px"
             ><Setting
           /></el-icon>
-          <!-- <template #dropdown>
+          <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>View</el-dropdown-item>
               <el-dropdown-item>Add</el-dropdown-item>
               <el-dropdown-item>Delete</el-dropdown-item>
             </el-dropdown-menu>
-          </template> -->
+          </template>
         </el-dropdown>
         <span class="login-name">Alex</span>
-      </div>
+      </div> -->
     </el-header>
     <el-container>
       <el-aside width="200px">
@@ -28,13 +29,13 @@
               <template #title>
                 <el-icon><DataLine /></el-icon>功能列
               </template>
-              <router-link class="router-link" to="/raffle" index="1-1"
-                ><el-menu-item>自製集單</el-menu-item></router-link
+              <router-link class="router-link" to="/raffleSetting" index="1-1"
+                ><el-menu-item>集單</el-menu-item></router-link
               >
 
-              <router-link class="router-link" to="/home" index="1-2"
+              <!-- <router-link class="router-link" to="/home" index="1-2"
                 ><el-menu-item>一番賞集單</el-menu-item></router-link
-              >
+              > -->
             </el-sub-menu>
           </el-menu>
         </el-scrollbar>
@@ -75,9 +76,6 @@ export default {
 .router-link:hover {
   color: inherit; /* 滑鼠移至時保持文字顏色不變 */
 }
-.layout-container-demo {
-  padding-bottom: 30px;
-}
 
 .layout-container-demo .el-header {
   position: relative;
@@ -89,6 +87,7 @@ export default {
   border-right: none;
 }
 .layout-container-demo .toolbar {
+  color: #ffffff;
   font-size: 18px;
   display: inline-flex;
   align-items: center;
@@ -99,9 +98,10 @@ export default {
 .login-name {
   color: #ffffff;
 }
+.el-container {
+  min-height: 100vh;
+}
 .el-footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 30px;
   background-color: #f5f7fa;

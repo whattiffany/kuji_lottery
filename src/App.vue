@@ -12,7 +12,4 @@ export default {
 body {
   margin: 0;
 }
-#app {
-  min-height: 100%;
-}
 </style>

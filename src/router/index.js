@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BaseLayout from "@/components/BaseLayout.vue";
-import HomePage from "../views/HomePage.vue";
-import RafflePage from "../views/RafflePage.vue";
+import Home from "../views/HomeView.vue";
+import Raffle from "../views/RaffleStartView.vue";
+import RaffleSetting from "../views/RaffleSettingView.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -11,11 +12,17 @@ const router = createRouter({
       children: [
         {
           path: "home",
-          component: HomePage,
+          component: Home,
         },
         {
           path: "raffle",
-          component: RafflePage,
+          name: "RaffleStart",
+          component: Raffle,
+          props: true,
+        },
+        {
+          path: "raffleSetting",
+          component: RaffleSetting,
         },
       ],
     },
