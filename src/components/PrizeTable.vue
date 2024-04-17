@@ -1,7 +1,19 @@
 <template>
   <el-table :data="prizeData" style="width: 100%" show-summary border>
     <el-table-column prop="name" label="獎項" />
+    <el-table-column prop="sub_name" label="說明" />
     <el-table-column prop="number" label="數量" />
+    <el-table-column prop="note" label="大獎" />
+    <el-table-column label="刪除">
+      <template #default="scope">
+        <el-button
+          size="small"
+          type="danger"
+          @click="handleDelete(scope.$index)"
+          >刪除</el-button
+        >
+      </template>
+    </el-table-column>
   </el-table>
   <el-button type="primary" @click="CreateList">送出</el-button>
   <el-button @click="resetForm">取消</el-button>
@@ -18,26 +30,35 @@ export default {
       prizeData: props.tableData,
     });
     const CreateList = () => {
-      // 将原始数据转换为带有重复名称的对象数组
       return data.prizeData.reduce((acc, cur) => {
         for (let i = 0; i < cur.number; i++) {
-          acc.push(cur.name);
+          let obj = {
+            name: cur.name,
+            sub_name: cur.sub_name,
+            note: cur.note,
+          };
+          acc.push(obj);
         }
         console.log(acc);
         router.push({
           name: "RaffleStart", // 目标路由的名称
           params: {
-            formData: acc, // 要传递的数据
+            formData: JSON.stringify(acc), // 要传递的数据
           },
         });
         return acc;
       }, []);
     };
+
+    const handleDelete = (index) => {
+      data.prizeData.pop(index);
+    };
+
     watch(props.tableData, (newValue) => {
       console.log(newValue);
       data.prizeData = newValue;
     });
-    return { ...data, CreateList };
+    return { ...data, CreateList, handleDelete };
   },
 };
 </script>

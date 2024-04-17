@@ -1,5 +1,5 @@
 <template>
-  <RaffleStickers :data="shuffleArr(formData)"></RaffleStickers>
+  <RaffleStickers :data="shuffleArr(JSON.parse(formData))"></RaffleStickers>
 </template>
 <script>
 import { reactive } from "vue";
@@ -18,7 +18,7 @@ export default {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
-      console.log("random:" + array);
+      console.log(array);
       return array;
     };
 

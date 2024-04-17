@@ -15,10 +15,6 @@ export default {
       prizeItems: [],
     });
 
-    // const getPrize = ()=>{
-    //   prizeGroup.prizeItems =
-    // }
-
     return {
       prizeGroup,
     };

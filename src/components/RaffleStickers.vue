@@ -1,6 +1,5 @@
 <template>
   <el-row v-loading="stickerloading" element-loading-text="製作中...">
-    <!-- 生成五个与 id 为 "book" 的元素 -->
     <el-col
       :span="4"
       v-for="stickerIndex in turnPage.totalNum"
@@ -22,7 +21,8 @@
         >
           <span>{{ stickerIndex }}</span>
           <div class="result" v-if="index != 0">
-            {{ turnPage.data[stickerIndex - 1] }}
+            {{ turnPage.data[stickerIndex - 1].name }}
+            {{ turnPage.data[stickerIndex - 1].note }}
           </div>
         </div>
       </div>
@@ -70,6 +70,11 @@ export default {
           turnCorners: "tl,tr",
           height: data.turnPage.height,
           width: data.turnPage.width,
+          when: {
+            turning: function (event) {
+              console.log(event);
+            },
+          },
         });
       });
     };
@@ -79,7 +84,6 @@ export default {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
-      console.log(array);
       return array;
     };
 
