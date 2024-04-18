@@ -19,10 +19,15 @@
             backgroundSize: 'contain,cover',
           }"
         >
-          <span>{{ stickerIndex }}</span>
+          <span style="padding-left: 5px">{{ stickerIndex }}</span>
           <div class="result" v-if="index != 0">
-            {{ turnPage.data[stickerIndex - 1].name }}
-            {{ turnPage.data[stickerIndex - 1].note }}
+            <span class="big-res">{{
+              turnPage.data[stickerIndex - 1].name
+            }}</span>
+            <br />
+            <span class="small-res">{{
+              turnPage.data[stickerIndex - 1].sub_name
+            }}</span>
           </div>
         </div>
       </div>
@@ -110,7 +115,17 @@ export default {
   margin-bottom: 20px;
 }
 .result {
-  font-size: 55px;
   text-align: center;
+  color: #6b6d71;
+  font-family: "luoyan";
+  height: 80%;
+}
+.big-res {
+  font-size: 85px;
+  line-height: 60px;
+}
+.small-res {
+  font-size: 25px;
+  line-height: 15px;
 }
 </style>

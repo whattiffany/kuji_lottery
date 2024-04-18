@@ -4,7 +4,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import router from "./router";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-
+import "@/assets/font/font.css";
 const app = createApp(App);
 
 // 將 Element Plus 的圖示組件註冊到應用程式中
