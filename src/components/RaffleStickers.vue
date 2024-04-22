@@ -106,7 +106,6 @@ export default {
 
     const openModel = (val, index) => {
       data.turnPage.data[index].opened = true;
-      console.log(data.turnPage.data);
       setTimeout(() => {
         modalVisible.value = true;
         hightlight_title.value = val.name;

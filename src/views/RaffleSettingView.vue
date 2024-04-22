@@ -1,5 +1,5 @@
 <template>
-  <PrizeForm @dataset="getPrize"></PrizeForm>
+  <PrizeForm></PrizeForm>
 </template>
 
 <script>

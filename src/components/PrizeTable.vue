@@ -16,7 +16,7 @@
     </el-table-column>
   </el-table>
   <el-button type="primary" @click="CreateList">送出</el-button>
-  <el-button @click="resetForm">取消</el-button>
+  <el-button>取消</el-button>
 </template>
 <script>
 import { reactive, watch } from "vue";
