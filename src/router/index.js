@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BaseLayout from "@/components/BaseLayout.vue";
-import Home from "../views/HomeView.vue";
+import Home from "../views/HomePage.vue";
 import Raffle from "../views/RaffleStartView.vue";
 import RaffleSetting from "../views/RaffleSettingView.vue";
 const router = createRouter({

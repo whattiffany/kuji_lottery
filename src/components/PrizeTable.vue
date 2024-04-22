@@ -36,10 +36,10 @@ export default {
             name: cur.name,
             sub_name: cur.sub_name,
             note: cur.note,
+            opened: false,
           };
           acc.push(obj);
         }
-        console.log(acc);
         router.push({
           name: "RaffleStart", // 目标路由的名称
           params: {
@@ -55,7 +55,6 @@ export default {
     };
 
     watch(props.tableData, (newValue) => {
-      console.log(newValue);
       data.prizeData = newValue;
     });
     return { ...data, CreateList, handleDelete };

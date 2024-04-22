@@ -1,9 +1,10 @@
 <template>
-  <el-row v-loading="stickerloading" element-loading-text="製作中...">
+  <el-row>
     <el-col
       :span="4"
       v-for="stickerIndex in turnPage.totalNum"
       :key="stickerIndex"
+      @click="openModel(turnPage.data[stickerIndex - 1], stickerIndex - 1)"
     >
       <div
         :id="'sticker_' + stickerIndex"
@@ -33,6 +34,15 @@
       </div>
     </el-col>
   </el-row>
+  <transition name="fade" appear>
+    <div v-if="modalVisible" class="model">
+      <div class="model-text-bg">
+        <span class="model-text">{{ hightlight_title }}</span>
+        <br />
+        <span class="model-text-sub">{{ hightlight_content }}</span>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -44,14 +54,15 @@ export default {
   components: {},
   props: ["data"],
   mounted() {
-    // 对每个生成的元素应用onTurn方法
     for (let i = 1; i <= this.turnPage.totalNum; i++) {
       this.onTurn("sticker_" + i);
     }
     this.shuffleArr(this.turnPage.data);
   },
   setup(props) {
-    const stickerloading = ref(false);
+    const modalVisible = ref(false);
+    const hightlight_title = ref("");
+    const hightlight_content = ref("");
     const data = reactive({
       turnPage: {
         width: 160,
@@ -75,11 +86,12 @@ export default {
           turnCorners: "tl,tr",
           height: data.turnPage.height,
           width: data.turnPage.width,
-          when: {
-            turning: function (event) {
-              console.log(event);
-            },
-          },
+          // when: {
+          //   turning: function (event) {
+          //     console.log(event);
+          //     // openModel(data.turnPage.data[id - 1]);
+          //   },
+          // },
         });
       });
     };
@@ -92,19 +104,28 @@ export default {
       return array;
     };
 
-    const loadingInit = () => {
+    const openModel = (val, index) => {
+      data.turnPage.data[index].opened = true;
+      console.log(data.turnPage.data);
       setTimeout(() => {
-        console.log("五秒已过，执行下一步操作");
-        stickerloading.value = false;
-      }, 5000);
+        modalVisible.value = true;
+        hightlight_title.value = val.name;
+        hightlight_content.value = val.sub_name;
+        // 自動消失
+        // setTimeout(() => {
+        //   modalVisible.value = false;
+        // }, "4000");
+      }, "500");
     };
 
     return {
       ...data,
       onTurn,
-      loadingInit,
       shuffleArr,
-      stickerloading,
+      openModel,
+      modalVisible,
+      hightlight_title,
+      hightlight_content,
     };
   },
 };
@@ -127,5 +148,44 @@ export default {
 .small-res {
   font-size: 25px;
   line-height: 15px;
+}
+.model {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  font-family: "luoyan";
+  font-weight: 500;
+  width: 500px;
+  height: 500px;
+  text-align: center;
+  background-image: url("~@/assets/gif/spotlight.gif");
+  background-size: cover;
+}
+.model-text-bg {
+  border-radius: 3%;
+  background: rgba(255, 255, 255, 0.5);
+  margin-top: 20%;
+}
+.model-text {
+  font-size: 120px;
+  line-height: 100px;
+}
+.model-text-sub {
+  font-size: 70px;
+  line-height: 70px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease-in;
+}
+.fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 0.6;
 }
 </style>

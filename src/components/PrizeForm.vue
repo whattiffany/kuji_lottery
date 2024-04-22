@@ -81,21 +81,14 @@ export default {
     });
 
     const addGroup = () => {
-      // emit("prizeGroup", [prizeItems]);
       const item = JSON.parse(JSON.stringify(prizeItems));
       prizeGroup.prizeItems.push(item);
-      console.log(prizeGroup.prizeItems);
-    };
-
-    const resetForm = () => {
-      formRef.value.resetFields();
     };
 
     return {
       prizeItems,
       formRef,
       prizeGroup,
-      resetForm,
       addGroup,
     };
   },
