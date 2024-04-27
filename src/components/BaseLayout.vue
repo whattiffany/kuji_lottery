@@ -92,7 +92,9 @@ export default {
 .router-link:hover {
   color: inherit; /* 滑鼠移至時保持文字顏色不變 */
 }
-
+.el-menu-item.is-active {
+  color: inherit;
+}
 .layout-container-demo .el-header {
   position: relative;
   color: #fffffe;
