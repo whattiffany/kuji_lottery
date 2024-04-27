@@ -15,8 +15,10 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-button type="primary" @click="CreateList">送出</el-button>
-  <el-button>取消</el-button>
+  <div style="margin-top: 20px">
+    <el-button class="submit" @click="CreateList">送出</el-button>
+    <el-button>取消</el-button>
+  </div>
 </template>
 <script>
 import { reactive, watch } from "vue";
@@ -61,3 +63,13 @@ export default {
   },
 };
 </script>
+<style>
+.submit {
+  color: black;
+  background-color: #f9bc60;
+}
+.submit:hover {
+  color: black;
+  background-color: #f99360;
+}
+</style>

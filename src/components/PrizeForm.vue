@@ -58,7 +58,6 @@
       <PrizeTable :tableData="prizeGroup.prizeItems"></PrizeTable>
     </el-col>
   </el-row>
-  <el-form-item> </el-form-item>
 </template>
 <script>
 import { reactive, ref } from "vue";

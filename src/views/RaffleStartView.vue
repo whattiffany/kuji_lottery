@@ -7,29 +7,40 @@
     籤紙產生中...
   </div>
   <div v-else>
-    <el-row>
-      <el-col
-        :span="4"
-        v-for="stickerIndex in turnPage.totalNum"
-        :key="stickerIndex"
-        @click="openModel(turnPage.data[stickerIndex - 1], stickerIndex - 1)"
-      >
-        <RaffleStickers
-          :stickerIndex="stickerIndex"
-          :data="turnPage.data[stickerIndex - 1]"
-        ></RaffleStickers>
+    <el-row :gutter="10">
+      <el-col :span="6">
+        <CountTable :tableData="prizeData" />
+      </el-col>
+      <el-col :span="18">
+        <el-row>
+          <el-col
+            :span="6"
+            v-for="stickerIndex in turnPage.totalNum"
+            :key="stickerIndex"
+            @click="
+              openModel(turnPage.data[stickerIndex - 1], stickerIndex - 1)
+            "
+          >
+            <RaffleStickers
+              :stickerIndex="stickerIndex"
+              :data="turnPage.data[stickerIndex - 1]"
+            ></RaffleStickers>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
   <transition name="fade" appear>
-    <div v-if="modalVisible" class="model" :class="{ 'model-gif': show_gif }">
-      <div class="model-text-bg">
-        <div class="close">
-          <el-icon @click="closeModel">
-            <Close />
-          </el-icon>
-        </div>
+    <div v-if="modalVisible" class="model">
+      <div class="close">
+        <el-icon @click="closeModel">
+          <Close />
+        </el-icon>
+      </div>
+      <div class="model-text-bg" :class="{ 'model-gif': show_gif }">
         <div>
+          <span>恭喜獲得</span>
+          <br />
           <span class="model-text">{{ hightlight_title }}</span>
           <br />
           <span class="model-text-sub">{{ hightlight_content }}</span>
@@ -41,20 +52,23 @@
 <script>
 import { reactive, ref } from "vue";
 import RaffleStickers from "../components/RaffleStickers.vue";
+import CountTable from "../components/PrizeCountTable";
 import { Close } from "@element-plus/icons-vue";
 export default {
   name: "RaffleStart",
   props: ["formData"],
-  components: { RaffleStickers },
+  components: { RaffleStickers, CountTable },
   mounted() {
     setTimeout(() => {
       this.turnPage.data = this.shuffleArr(this.turnPage.data);
       this.stickerloading = false;
+      this.prizeData = this.countPrize();
     }, 4000);
   },
   setup(props) {
     const stickerloading = ref(true);
     const show_gif = ref(false);
+    const prizeData = ref(null);
     const data = reactive({
       formData: props.formData,
       turnPage: {
@@ -66,6 +80,7 @@ export default {
         loading: false,
         show: true,
       },
+      // prizeData: null,
     });
 
     const shuffleArr = (array) => {
@@ -80,13 +95,28 @@ export default {
     const hightlight_title = ref("");
     const hightlight_content = ref("");
 
+    const countPrize = () => {
+      let openedCounts = data.turnPage.data.reduce((acc, item) => {
+        if (!acc[item.name]) acc[item.name] = { true: 0, false: 0 };
+        acc[item.name][item.opened] += 1;
+        return acc;
+      }, {});
+
+      return Object.keys(openedCounts).map((name) => ({
+        name: name,
+        openedTrue: openedCounts[name].true,
+        openedFalse: openedCounts[name].false,
+        total: openedCounts[name].true + openedCounts[name].false,
+      }));
+    };
+
     const openModel = (val, index) => {
-      console.log(data.turnPage.data[index]);
       data.turnPage.data[index].opened = true;
       show_gif.value = false;
       if (data.turnPage.data[index].note) {
         show_gif.value = true;
       }
+      prizeData.value = countPrize();
       setTimeout(() => {
         modalVisible.value = true;
         hightlight_title.value = val.name;
@@ -104,6 +134,7 @@ export default {
 
     return {
       ...data,
+      countPrize,
       shuffleArr,
       stickerloading,
       openModel,
@@ -113,6 +144,7 @@ export default {
       hightlight_title,
       hightlight_content,
       show_gif,
+      prizeData,
     };
   },
 };
@@ -130,17 +162,18 @@ export default {
   font-family: "luoyan";
   font-weight: 500;
   width: 400px;
-  height: 300px;
+  height: 350px;
   text-align: center;
+  background: #fff;
+  border-radius: 3%;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
 }
 .model-gif {
   background-image: url("~@/assets/gif/spotlight.gif");
   background-size: cover;
 }
 .model-text-bg {
-  border-radius: 3%;
-  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.6);
+  font-size: 30px;
   height: 100%;
 }
 .model-text {
@@ -148,7 +181,7 @@ export default {
   line-height: 100px;
 }
 .model-text-sub {
-  font-size: 70px;
+  font-size: 40px;
   line-height: 70px;
 }
 .fade-enter-active,
@@ -167,5 +200,7 @@ export default {
   text-align: right;
   font-size: 25px;
   padding: 10px;
+}
+.total-count {
 }
 </style>

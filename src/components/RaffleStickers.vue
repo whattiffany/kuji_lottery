@@ -1,7 +1,6 @@
 <template>
   <div :id="'sticker_' + stickerIndex" class="sticker grid-content">
     <div
-      class="sticker"
       v-for="(item, index) in imageList"
       :key="index"
       :style="{
@@ -11,9 +10,13 @@
     >
       <span style="padding-left: 5px">{{ stickerIndex }}</span>
       <div class="result" v-if="index != 0">
-        <span class="big-res">{{ turnPage.data.name }}</span>
-        <br />
-        <span class="small-res">{{ turnPage.data.sub_name }}</span>
+        <div class="alignment-container">
+          <el-space>
+            <!-- <span class="big-res"></span> -->
+            <span class="big-res">{{ turnPage.data.name }}</span
+            ><span class="small-res">{{ turnPage.data.sub_name }}</span>
+          </el-space>
+        </div>
       </div>
     </div>
   </div>
@@ -72,18 +75,25 @@ export default {
 </script>
 
 <style scoped>
+.sticker {
+  border: 3px solid #000;
+  border-radius: 5px;
+}
 .result {
   text-align: center;
   color: #6b6d71;
   font-family: "luoyan";
   height: 80%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
 }
 .big-res {
-  font-size: 85px;
-  line-height: 60px;
+  font-size: 50px;
+  line-height: 20px;
 }
 .small-res {
   font-size: 25px;
-  line-height: 15px;
+  line-height: 20px;
 }
 </style>

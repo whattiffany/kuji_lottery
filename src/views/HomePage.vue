@@ -1,5 +1,5 @@
 <template>
-  <p>Home</p>
+  <p>抽籤設定＆開籤</p>
 </template>
 <script>
 export default {
