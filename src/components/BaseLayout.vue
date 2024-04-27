@@ -3,7 +3,7 @@
     <el-header>
       <router-link class="router-link" to="/home" index="1-1">
         <el-icon><Goods /></el-icon>
-        <span class="toolbar"> Alex Japan Store (測試版v1.0)</span>
+        <span class="toolbar"> Alex Japan Store (測試版v2.0)</span>
       </router-link>
       <!-- <div class="toolbar">
         <el-dropdown>
@@ -28,12 +28,12 @@
       <el-aside width="auto">
         <el-scrollbar>
           <el-menu class="el-menu-vertical-demo" :collapse="isCollapse">
-            <el-menu-item index="1">
-              <router-link class="router-link" to="/raffleSetting" index="1-1">
-                <el-icon><SetUp /></el-icon
-                ><template #title>集單</template></router-link
-              >
-            </el-menu-item>
+            <router-link class="router-link" to="/raffleSetting" index="1-1">
+              <el-menu-item index="1">
+                <el-icon><SetUp /></el-icon>
+                <template #title>集單</template>
+              </el-menu-item>
+            </router-link>
           </el-menu>
         </el-scrollbar>
       </el-aside>
@@ -130,7 +130,7 @@ export default {
   background-color: #e8e4e6;
 }
 .el-container {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 .el-footer {
   width: 100%;
