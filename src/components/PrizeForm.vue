@@ -58,6 +58,21 @@
       <PrizeTable :tableData="prizeGroup.prizeItems"></PrizeTable>
     </el-col>
   </el-row>
+  <el-dialog
+    v-model="centerDialogVisible"
+    title="警告"
+    width="500"
+    align-center
+  >
+    <span>請輸入必填資料/數量需大於0</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="centerDialogVisible = false">
+          確認
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 <script>
 import { reactive, ref } from "vue";
@@ -70,6 +85,7 @@ export default {
   },
   setup() {
     const formRef = ref(null);
+    const centerDialogVisible = ref(false);
     const prizeItems = reactive({
       name: "",
       number: null,
@@ -81,6 +97,10 @@ export default {
 
     const addGroup = () => {
       const item = JSON.parse(JSON.stringify(prizeItems));
+      if (item.name == null || item.number == 0 || item.number == null) {
+        centerDialogVisible.value = true;
+        return;
+      }
       prizeGroup.prizeItems.push(item);
     };
 
@@ -89,6 +109,7 @@ export default {
       formRef,
       prizeGroup,
       addGroup,
+      centerDialogVisible,
     };
   },
 };

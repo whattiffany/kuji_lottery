@@ -11,7 +11,8 @@
         <template #default="scope">
           <span
             :class="{
-              limit: scope.row.openedFalse < scope.row.total / 2 ? true : false,
+              limit:
+                scope.row.openedFalse <= scope.row.total / 2 ? true : false,
             }"
             >{{ scope.row.openedFalse }}/{{ scope.row.total }}</span
           >
