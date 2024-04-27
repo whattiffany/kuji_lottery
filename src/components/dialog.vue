@@ -22,7 +22,6 @@ export default {
   setup(props, ctx) {
     const centerDialogVisible = ref(props.dialogVisible);
     const dialogContent = ref(props.content);
-    console.log(props.dialogVisible);
 
     const closeDialog = () => {
       centerDialogVisible.value = false;
@@ -32,7 +31,6 @@ export default {
     watch(
       () => props.dialogVisible,
       (newValue) => {
-        console.log(newValue);
         centerDialogVisible.value = newValue;
       }
     );

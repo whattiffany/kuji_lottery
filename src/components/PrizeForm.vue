@@ -58,7 +58,13 @@
       <PrizeTable :tableData="prizeGroup.prizeItems"></PrizeTable>
     </el-col>
   </el-row>
-  <el-dialog
+  <Dialog
+    v-if="waringDialog"
+    :dialogVisible="waringDialog"
+    :content="warningContent"
+    @closeDialog="closeDialog"
+  ></Dialog>
+  <!-- <el-dialog
     v-model="centerDialogVisible"
     title="警告"
     width="500"
@@ -72,20 +78,22 @@
         </el-button>
       </div>
     </template>
-  </el-dialog>
+  </el-dialog> -->
 </template>
 <script>
 import { reactive, ref } from "vue";
 import PrizeTable from "../components/PrizeTable.vue";
-
+import Dialog from "./dialog.vue";
 export default {
   name: "PrizeForm",
   components: {
     PrizeTable,
+    Dialog,
   },
   setup() {
     const formRef = ref(null);
-    const centerDialogVisible = ref(false);
+    const waringDialog = ref(false);
+    const warningContent = ref(null);
     const prizeItems = reactive({
       name: "",
       number: null,
@@ -98,10 +106,15 @@ export default {
     const addGroup = () => {
       const item = JSON.parse(JSON.stringify(prizeItems));
       if (item.name == null || item.number == 0 || item.number == null) {
-        centerDialogVisible.value = true;
+        waringDialog.value = true;
+        warningContent.value = "資料不得為空/數量需>0";
         return;
       }
       prizeGroup.prizeItems.push(item);
+    };
+
+    const closeDialog = (val) => {
+      waringDialog.value = val;
     };
 
     return {
@@ -109,7 +122,9 @@ export default {
       formRef,
       prizeGroup,
       addGroup,
-      centerDialogVisible,
+      waringDialog,
+      warningContent,
+      closeDialog,
     };
   },
 };

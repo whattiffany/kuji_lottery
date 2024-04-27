@@ -24,7 +24,7 @@
 <script>
 import $ from "jquery";
 import "turn.js";
-import { reactive, nextTick } from "vue";
+import { reactive, nextTick, ref } from "vue";
 
 export default {
   name: "RafflePage",
@@ -34,6 +34,7 @@ export default {
     this.onTurn("sticker_" + this.stickerIndex);
   },
   setup(props) {
+    const click = ref(true);
     const data = reactive({
       stickerIndex: props.stickerIndex,
       imageList: ["sticker.png", "sticker-back.png"],
@@ -55,12 +56,13 @@ export default {
           turnCorners: "tl,tr",
           height: data.turnPage.height,
           width: data.turnPage.width,
-          // when: {
-          //   turning: function (event) {
-          //     console.log(event);
-          //     // openModel(data.turnPage.data[id - 1]);
-          //   },
-          // },
+          when: {
+            turning: function (event) {
+              click.value = true;
+              console.log(event);
+              // openModel(data.turnPage.data[id - 1]);
+            },
+          },
         });
       });
     };
