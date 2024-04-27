@@ -12,7 +12,6 @@
       <div class="result" v-if="index != 0">
         <div class="alignment-container">
           <el-space>
-            <!-- <span class="big-res"></span> -->
             <span class="big-res">{{ turnPage.data.name }}</span
             ><span class="small-res">{{ turnPage.data.sub_name }}</span>
           </el-space>

@@ -1,5 +1,11 @@
 <template>
-  <el-table :data="prizeData" style="width: 100%" show-summary border>
+  <el-table
+    :data="prizeData"
+    :header-cell-style="{ backgroundColor: '#abd1c6', color: '#4d4e52' }"
+    style="width: 100%"
+    show-summary
+    border
+  >
     <el-table-column prop="name" label="獎項" />
     <el-table-column prop="sub_name" label="說明" />
     <el-table-column prop="number" label="數量" />

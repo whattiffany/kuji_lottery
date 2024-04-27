@@ -102,12 +102,14 @@ export default {
         return acc;
       }, {});
 
-      return Object.keys(openedCounts).map((name) => ({
-        name: name,
-        openedTrue: openedCounts[name].true,
-        openedFalse: openedCounts[name].false,
-        total: openedCounts[name].true + openedCounts[name].false,
-      }));
+      return Object.keys(openedCounts)
+        .map((name) => ({
+          name: name,
+          openedTrue: openedCounts[name].true,
+          openedFalse: openedCounts[name].false,
+          total: openedCounts[name].true + openedCounts[name].false,
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
     };
 
     const openModel = (val, index) => {

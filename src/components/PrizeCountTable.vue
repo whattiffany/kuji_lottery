@@ -1,12 +1,20 @@
 <template>
   <div class="total-count">
-    <el-table :data="prizeData" style="width: 100%">
+    <el-table
+      :data="prizeData"
+      :header-cell-style="{ backgroundColor: '#abd1c6', color: '#4d4e52' }"
+      style="width: 100%"
+      border
+    >
       <el-table-column prop="name" label="獎項" />
-      <!-- <el-table-column prop="openedFalse" label="未開" />
-      <el-table-column prop="openedTrue" label="已開" /> -->
-      <el-table-column prop="total" label="已開/總數">
+      <el-table-column prop="total" label="未開/總數">
         <template #default="scope">
-          <span>{{ scope.row.openedTrue }}/{{ scope.row.total }}</span>
+          <span
+            :class="{
+              limit: scope.row.openedFalse < scope.row.total / 2 ? true : false,
+            }"
+            >{{ scope.row.openedFalse }}/{{ scope.row.total }}</span
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -30,3 +38,8 @@ export default {
   },
 };
 </script>
+<style>
+.limit {
+  color: red;
+}
+</style>

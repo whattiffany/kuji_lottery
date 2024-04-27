@@ -40,7 +40,6 @@
       <div class="collapse">
         <el-icon v-if="isCollapse" @click="handleOpen"><DArrowRight /></el-icon>
         <el-icon v-else @click="handleOpen"><DArrowLeft /></el-icon>
-        <!-- <el-icon><DArrowRight /></el-icon> -->
       </div>
       <el-main>
         <el-scrollbar>
