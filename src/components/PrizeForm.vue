@@ -64,21 +64,6 @@
     :content="warningContent"
     @closeDialog="closeDialog"
   ></Dialog>
-  <!-- <el-dialog
-    v-model="centerDialogVisible"
-    title="警告"
-    width="500"
-    align-center
-  >
-    <span>請輸入必填資料/數量需大於0</span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button type="primary" @click="centerDialogVisible = false">
-          確認
-        </el-button>
-      </div>
-    </template>
-  </el-dialog> -->
 </template>
 <script>
 import { reactive, ref } from "vue";

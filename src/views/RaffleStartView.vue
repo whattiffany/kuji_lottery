@@ -9,9 +9,69 @@
   <div v-else>
     <el-row :gutter="10">
       <el-col :span="6">
+        <p>新增玩家：</p>
+        <el-form
+          ref="formRef"
+          :inline="true"
+          label-position="left"
+          label-width="auto"
+          :model="player"
+          style="max-width: 600px"
+        >
+          <el-form-item
+            label="名稱"
+            prop="name"
+            :rules="[{ required: true, message: '必填' }]"
+          >
+            <el-input
+              v-model="player.name"
+              placeholder="群組暱稱"
+              type="text"
+              autocomplete="off"
+            />
+          </el-form-item>
+          <el-form-item
+            label="抽數"
+            prop="number"
+            placeholder="數字"
+            width="50"
+            :rules="[
+              { required: true, message: '必填' },
+              { type: 'number', message: '請輸入數字' },
+            ]"
+          >
+            <el-input
+              v-model.number="player.number"
+              type="text"
+              autocomplete="off"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="info" @click="addPlayer">增加</el-button>
+          </el-form-item>
+        </el-form>
+        <br />
+        <p>即時開獎情況：</p>
         <CountTable :tableData="prizeData" />
+        <br />
+        <p>已結束的玩家：</p>
+        <PlayerTable></PlayerTable>
       </el-col>
       <el-col :span="18">
+        <el-row>
+          <el-col :span="12">
+            <p>目前參加人：</p>
+            <el-alert
+              v-if="playerTitle"
+              :title="playerTitle"
+              type="success"
+              :description="playerContent"
+              show-icon
+              close-text="結束"
+              @close="playerCompleted"
+            />
+          </el-col>
+        </el-row>
         <el-row>
           <el-col
             :span="6"
@@ -53,11 +113,12 @@
 import { reactive, ref } from "vue";
 import RaffleStickers from "../components/RaffleStickers.vue";
 import CountTable from "../components/PrizeCountTable";
+import PlayerTable from "../components/Player";
 import { Close } from "@element-plus/icons-vue";
 export default {
   name: "RaffleStart",
   props: ["formData"],
-  components: { RaffleStickers, CountTable },
+  components: { RaffleStickers, CountTable, PlayerTable },
   mounted() {
     setTimeout(() => {
       this.turnPage.data = this.shuffleArr(this.turnPage.data);
@@ -69,6 +130,9 @@ export default {
     const stickerloading = ref(true);
     const show_gif = ref(false);
     const prizeData = ref(null);
+    const formRef = ref(null);
+    const playerTitle = ref(null);
+    const playerContent = ref(null);
     const data = reactive({
       formData: props.formData,
       turnPage: {
@@ -80,7 +144,11 @@ export default {
         loading: false,
         show: true,
       },
-      // prizeData: null,
+      player: {
+        name: "",
+        prizes: "",
+      },
+      playerlist: [],
     });
 
     const shuffleArr = (array) => {
@@ -134,6 +202,20 @@ export default {
       modalVisible.value = false;
     };
 
+    const addPlayer = () => {
+      const item = JSON.parse(JSON.stringify(data.player));
+      let count = 0; //todo
+      playerTitle.value = "**" + item.name + "** 正在抽!";
+      playerContent.value = "目前戰況：(" + count + "/" + item.number + ")";
+      data.playerlist.push(item);
+      data.player.name = "";
+      data.player.number = 0;
+    };
+
+    const playerCompleted = () => {
+      //todo
+    };
+
     return {
       ...data,
       countPrize,
@@ -147,6 +229,11 @@ export default {
       hightlight_content,
       show_gif,
       prizeData,
+      formRef,
+      addPlayer,
+      playerTitle,
+      playerContent,
+      playerCompleted,
     };
   },
 };
@@ -202,7 +289,5 @@ export default {
   text-align: right;
   font-size: 25px;
   padding: 10px;
-}
-.total-count {
 }
 </style>
