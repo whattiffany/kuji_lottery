@@ -28,6 +28,7 @@
               placeholder="群組暱稱"
               type="text"
               autocomplete="off"
+              :disabled="!playerloading"
             />
           </el-form-item>
           <el-form-item
@@ -55,9 +56,9 @@
         <CountTable :tableData="prizeData" />
         <br />
         <p>已結束的玩家：</p>
-        <PlayerTable></PlayerTable>
+        <PlayerTable :endPlayers="playerlist"></PlayerTable>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="18" class="black">
         <el-row>
           <el-col :span="12">
             <p>目前參加人：</p>
@@ -86,6 +87,14 @@
               :data="turnPage.data[stickerIndex - 1]"
             ></RaffleStickers>
           </el-col>
+          <div v-if="playerloading" class="standby-mask">
+            <el-alert
+              :title="playerloadingText"
+              type="info"
+              center
+              :closable="false"
+            />
+          </div>
         </el-row>
       </el-col>
     </el-row>
@@ -108,17 +117,23 @@
       </div>
     </div>
   </transition>
+  <Dialog
+    :dialogVisible="waringDialog"
+    :content="warningContent"
+    @closeDialog="closeDialog"
+  ></Dialog>
 </template>
 <script>
 import { reactive, ref } from "vue";
 import RaffleStickers from "../components/RaffleStickers.vue";
 import CountTable from "../components/PrizeCountTable";
 import PlayerTable from "../components/Player";
+import Dialog from "../components/dialog.vue";
 import { Close } from "@element-plus/icons-vue";
 export default {
   name: "RaffleStart",
   props: ["formData"],
-  components: { RaffleStickers, CountTable, PlayerTable },
+  components: { RaffleStickers, CountTable, PlayerTable, Dialog },
   mounted() {
     setTimeout(() => {
       this.turnPage.data = this.shuffleArr(this.turnPage.data);
@@ -128,6 +143,10 @@ export default {
   },
   setup(props) {
     const stickerloading = ref(true);
+    const playerloading = ref(true);
+    const waringDialog = ref(false);
+    const warningContent = ref("");
+    const playerloadingText = ref("請新增目前玩家後開始遊戲");
     const show_gif = ref(false);
     const prizeData = ref(null);
     const formRef = ref(null);
@@ -146,7 +165,8 @@ export default {
       },
       player: {
         name: "",
-        prizes: "",
+        number: 1,
+        prizes: [],
       },
       playerlist: [],
     });
@@ -186,6 +206,16 @@ export default {
       if (data.turnPage.data[index].note) {
         show_gif.value = true;
       }
+      data.player.prizes.push(val.name);
+      let now_prize = data.player.prizes.join(",");
+      playerContent.value =
+        "目前戰況：" +
+        now_prize +
+        " (" +
+        (data.player.number - data.player.prizes.length) +
+        "/" +
+        data.player.number +
+        ")";
       prizeData.value = countPrize();
       setTimeout(() => {
         modalVisible.value = true;
@@ -196,24 +226,49 @@ export default {
         //   modalVisible.value = false;
         // }, "4000");
       }, "500");
+      if (data.player.number - data.player.prizes.length == 0) {
+        playerloading.value = false;
+      }
     };
 
     const closeModel = () => {
       modalVisible.value = false;
+      if (data.player.number - data.player.prizes.length == 0) {
+        playerloading.value = true;
+        playerloadingText.value = "本次結束，請新增下一位玩家";
+      }
     };
 
     const addPlayer = () => {
+      if (data.player.number < 1) {
+        waringDialog.value = true;
+        warningContent.value = "請輸入1以上(含)的數量";
+        return;
+      }
       const item = JSON.parse(JSON.stringify(data.player));
-      let count = 0; //todo
+      let count = 0;
       playerTitle.value = "**" + item.name + "** 正在抽!";
-      playerContent.value = "目前戰況：(" + count + "/" + item.number + ")";
-      data.playerlist.push(item);
-      data.player.name = "";
-      data.player.number = 0;
+      playerContent.value =
+        "目前戰況：(" + (item.number - count) + "/" + item.number + ")";
+      data.player.index = data.playerlist.length + 1;
+      playerloading.value = false;
     };
 
     const playerCompleted = () => {
-      //todo
+      const item = JSON.parse(JSON.stringify(data.player));
+      playerTitle.value = null;
+      playerContent.value = null;
+      item.prizes = item.prizes.join(",");
+      data.playerlist.push(item);
+      data.player.name = "";
+      data.player.number = 0;
+      data.player.prizes = [];
+      playerloading.value = true;
+      playerloadingText.value = "請新增目前玩家後開始遊戲";
+    };
+
+    const closeDialog = (val) => {
+      waringDialog.value = val;
     };
 
     return {
@@ -234,6 +289,11 @@ export default {
       playerTitle,
       playerContent,
       playerCompleted,
+      playerloading,
+      playerloadingText,
+      waringDialog,
+      warningContent,
+      closeDialog,
     };
   },
 };
@@ -289,5 +349,17 @@ export default {
   text-align: right;
   font-size: 25px;
   padding: 10px;
+}
+.standby-mask {
+  background-color: var(--el-mask-color);
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity var(--el-transition-duration);
+  z-index: 2000;
+  text-align: center;
 }
 </style>

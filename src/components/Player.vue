@@ -19,28 +19,14 @@
   </el-table>
 </template>
 <script>
-import { reactive, h } from "vue";
+import { reactive, h, watch } from "vue";
 export default {
   name: "PlayerTable",
-  // props: ["formData"],
-
-  mounted() {
-    console.log("here");
-  },
-  setup() {
-    const playerData = reactive({
-      playerData: [
-        {
-          index: 1,
-          name: "tiff",
-          prizes: "A,B,C",
-        },
-        {
-          index: 2,
-          name: "eric",
-          prizes: "A,B,C,D,D,D",
-        },
-      ],
+  props: ["endPlayers"],
+  mounted() {},
+  setup(props) {
+    const data = reactive({
+      playerData: props.endPlayers,
     });
     const getSummaries = (param) => {
       const { columns, data } = param;
@@ -68,7 +54,19 @@ export default {
 
       return sums;
     };
-    return { ...playerData, getSummaries };
+    watch(
+      () => props.endPlayers,
+      (newVal) => {
+        console.log(newVal);
+        // let newlist = newVal.forEach((item) => {
+        //   if (item.name != "") {
+        //     item.prizes = item.prizes.join(",");
+        //   }
+        // });
+        data.playerData = newVal;
+      }
+    );
+    return { ...data, getSummaries };
   },
 };
 </script>
