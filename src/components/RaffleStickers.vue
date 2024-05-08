@@ -36,7 +36,7 @@ export default {
   mounted() {
     this.onTurn("sticker_" + this.stickerIndex);
   },
-  setup(props) {
+  setup(props, ctx) {
     // const click = ref(true);
     const data = reactive({
       stickerIndex: props.stickerIndex,
@@ -52,7 +52,7 @@ export default {
         $("#" + id).turn({
           acceleration: true,
           display: "single",
-          duration: 1500,
+          duration: 500,
           page: 1,
           gradients: true,
           autoCenter: true,
@@ -60,13 +60,14 @@ export default {
           direction: "rtl",
           height: data.turnPage.height,
           width: data.turnPage.width,
-          // when: {
-          //   turning: function (event) {
-          //     click.value = true;
-          // console.log(event);
-          // openModel(data.turnPage.data[id - 1]);
-          //   },
-          // },
+          when: {
+            turned: function (event, page) {
+              if (page == 2) ctx.emit("turnedIndex", data.stickerIndex);
+            },
+            last: function () {
+              $("#" + id).turn("disable", true);
+            },
+          },
         });
       });
     };

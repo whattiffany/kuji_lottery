@@ -77,13 +77,13 @@
             :span="6"
             v-for="stickerIndex in turnPage.totalNum"
             :key="stickerIndex"
-            @click="
-              openModel(turnPage.data[stickerIndex - 1], stickerIndex - 1)
-            "
           >
             <RaffleStickers
               :stickerIndex="stickerIndex"
               :data="turnPage.data[stickerIndex - 1]"
+              @turnedIndex="
+                openModel(turnPage.data[stickerIndex - 1], stickerIndex - 1)
+              "
             ></RaffleStickers>
           </el-col>
           <div v-if="playerloading" class="standby-mask">
@@ -205,7 +205,10 @@ export default {
     const openModel = (val, index) => {
       if (data.openedIndex.includes(index + 1)) {
         // console.log("has opened:", data.openedIndex);
-        $("#sticker_" + (index + 1)).turn("disable", true);
+        $("#sticker_" + (index + 1)).turn("stop");
+        // $("#sticker_" + (index + 1)).bind("end", function (event) {
+        //   alert("turn.end:" + event);
+        // });
         return;
       } else {
         data.openedIndex.push(index + 1);
