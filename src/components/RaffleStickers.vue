@@ -12,8 +12,11 @@
       <div class="result" v-if="index != 0">
         <div class="alignment-container">
           <el-space>
-            <span class="big-res">{{ turnPage.data.name }}</span
-            ><span class="small-res">{{ turnPage.data.sub_name }}</span>
+            <span
+              ><span class="big-res">{{ turnPage.data.name }}</span
+              >賞</span
+            >
+            <span class="small-res">{{ turnPage.data.sub_name }}</span>
           </el-space>
         </div>
       </div>
@@ -53,7 +56,8 @@ export default {
           page: 1,
           gradients: true,
           autoCenter: true,
-          turnCorners: "tl,tr",
+          turnCorners: "br,tr",
+          direction: "rtl",
           height: data.turnPage.height,
           width: data.turnPage.width,
           // when: {
@@ -83,7 +87,7 @@ export default {
 .result {
   text-align: center;
   color: #6b6d71;
-  font-family: "luoyan";
+  font-family: "genYoGothic";
   height: 80%;
   padding-left: 20px;
   padding-right: 20px;
@@ -94,7 +98,7 @@ export default {
   line-height: 20px;
 }
 .small-res {
-  font-size: 25px;
+  font-size: 20px;
   line-height: 20px;
 }
 </style>

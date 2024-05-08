@@ -1,4 +1,10 @@
 @font-face {
   font-family: "luoyan";
   src: url("./luoyan.ttf");
+  unicode-range: U+4E00-9FFF;
+}
+@font-face {
+  font-family: "genYoGothic";
+  src: url("./GenYoGothic.ttc");
+  unicode-range: U+00-024F;
 }

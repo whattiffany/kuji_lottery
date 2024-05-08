@@ -68,8 +68,7 @@
               type="success"
               :description="playerContent"
               show-icon
-              close-text="結束"
-              @close="playerCompleted"
+              :closable="false"
             />
           </el-col>
         </el-row>
@@ -124,7 +123,9 @@
   ></Dialog>
 </template>
 <script>
-import { reactive, ref } from "vue";
+import $ from "jquery";
+import "turn.js";
+import { reactive, ref, watch } from "vue";
 import RaffleStickers from "../components/RaffleStickers.vue";
 import CountTable from "../components/PrizeCountTable";
 import PlayerTable from "../components/Player";
@@ -169,6 +170,7 @@ export default {
         prizes: [],
       },
       playerlist: [],
+      openedIndex: [],
     });
 
     const shuffleArr = (array) => {
@@ -201,6 +203,14 @@ export default {
     };
 
     const openModel = (val, index) => {
+      if (data.openedIndex.includes(index + 1)) {
+        // console.log("has opened:", data.openedIndex);
+        $("#sticker_" + (index + 1)).turn("disable", true);
+        return;
+      } else {
+        data.openedIndex.push(index + 1);
+      }
+
       data.turnPage.data[index].opened = true;
       show_gif.value = false;
       if (data.turnPage.data[index].note) {
@@ -236,6 +246,7 @@ export default {
       if (data.player.number - data.player.prizes.length == 0) {
         playerloading.value = true;
         playerloadingText.value = "本次結束，請新增下一位玩家";
+        playerCompleted();
       }
     };
 
@@ -308,7 +319,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
-  font-family: "luoyan";
+  font-family: "genYoGothic";
   font-weight: 500;
   width: 400px;
   height: 350px;
@@ -326,6 +337,7 @@ export default {
   height: 100%;
 }
 .model-text {
+  font-family: "genYoGothic";
   font-size: 120px;
   line-height: 100px;
 }
