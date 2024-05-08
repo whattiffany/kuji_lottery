@@ -125,7 +125,7 @@
 <script>
 import $ from "jquery";
 import "turn.js";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import RaffleStickers from "../components/RaffleStickers.vue";
 import CountTable from "../components/PrizeCountTable";
 import PlayerTable from "../components/Player";
