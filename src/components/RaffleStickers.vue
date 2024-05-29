@@ -1,5 +1,9 @@
 <template>
-  <div :id="'sticker_' + stickerIndex" class="sticker grid-content">
+  <div
+    :id="'sticker_' + stickerIndex"
+    class="sticker grid-content"
+    @click="playSound"
+  >
     <div
       v-for="(item, index) in imageList"
       :key="index"
@@ -22,12 +26,13 @@
       </div>
     </div>
   </div>
+  <audio ref="sound" :src="`${require('@/assets/sound/open.mp3')}`"></audio>
 </template>
 
 <script>
 import $ from "jquery";
 import "turn.js";
-import { reactive, nextTick } from "vue";
+import { reactive, nextTick, ref } from "vue";
 
 export default {
   name: "RafflePage",
@@ -38,6 +43,8 @@ export default {
   },
   setup(props, ctx) {
     // const click = ref(true);
+    const sound = ref(null);
+    // const soundUrl = ref(require("@/assets/sound/opened.mp3"));
     const data = reactive({
       stickerIndex: props.stickerIndex,
       imageList: ["sticker.png", "sticker-back.png"],
@@ -52,7 +59,7 @@ export default {
         $("#" + id).turn({
           acceleration: true,
           display: "single",
-          duration: 500,
+          duration: 2000,
           page: 1,
           gradients: true,
           autoCenter: true,
@@ -71,10 +78,15 @@ export default {
         });
       });
     };
+    const playSound = () => {
+      sound.value.play();
+    };
 
     return {
       ...data,
       onTurn,
+      playSound,
+      sound,
     };
   },
 };

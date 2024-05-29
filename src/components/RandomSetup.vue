@@ -1,8 +1,17 @@
 <template>
   <div class="random-number">
-    <span class="random">電選最後賞：{{ currentNumber }}</span>
-    <el-button type="primary" @click="startRandomFunc">開始</el-button>
+    <span class="random">最後賞：{{ currentNumber }}</span>
+    <el-button type="primary" @click="startRandomFunc">開始電選</el-button>
   </div>
+  <audio
+    ref="sound"
+    :src="`${require('@/assets/sound/random.mp3')}`"
+    @ended="playSecondSound"
+  ></audio>
+  <audio
+    ref="sound2"
+    :src="`${require('@/assets/sound/congrate.mp3')}`"
+  ></audio>
   <Dialog
     :dialogVisible="waringDialog"
     title="最後賞得主"
@@ -21,12 +30,15 @@ export default {
     const waringDialog = ref(false);
     const warningContent = ref("");
     const currentNumber = ref(1);
+    const sound = ref(null);
+    const sound2 = ref(null);
     const data = reactive({
       players: props.players,
     });
     let timer = null;
 
     const startRandomFunc = () => {
+      sound.value.play();
       if (timer) return; // 避免重複啟動計時器
       timer = setInterval(() => {
         currentNumber.value =
@@ -42,8 +54,11 @@ export default {
           "號：" +
           data.players[currentNumber.value - 1] +
           "！";
-        console.log(data.players[currentNumber.value - 1]);
-      }, 3000); // 3秒後自動停止
+      }, 3500); // 3秒後自動停止
+    };
+
+    const playSecondSound = () => {
+      sound2.value.play();
     };
 
     const closeDialog = (val) => {
@@ -70,6 +85,9 @@ export default {
       waringDialog,
       warningContent,
       closeDialog,
+      sound,
+      sound2,
+      playSecondSound,
     };
   },
 };

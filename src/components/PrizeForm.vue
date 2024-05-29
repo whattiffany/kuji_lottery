@@ -61,6 +61,7 @@
   <Dialog
     v-if="waringDialog"
     :dialogVisible="waringDialog"
+    title="警告"
     :content="warningContent"
     @closeDialog="closeDialog"
   ></Dialog>
