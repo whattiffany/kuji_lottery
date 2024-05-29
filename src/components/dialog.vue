@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="centerDialogVisible"
-    title="警告"
+    :title="dialogTitle"
     width="500"
     align-center
   >
@@ -17,10 +17,11 @@
 import { ref, watch } from "vue";
 export default {
   name: "newDialog",
-  props: ["dialogVisible", "content"],
+  props: ["dialogVisible", "content", "title"],
   emit: ["dialogVisible"],
   setup(props, ctx) {
     const centerDialogVisible = ref(props.dialogVisible);
+    const dialogTitle = ref(props.title);
     const dialogContent = ref(props.content);
 
     const closeDialog = () => {
@@ -43,6 +44,7 @@ export default {
 
     return {
       centerDialogVisible,
+      dialogTitle,
       dialogContent,
       closeDialog,
     };

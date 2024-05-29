@@ -56,7 +56,10 @@
         <CountTable :tableData="prizeData" />
         <br />
         <p>已結束的玩家：</p>
-        <PlayerTable :endPlayers="playerlist"></PlayerTable>
+        <PlayerTable
+          :endPlayers="playerlist"
+          :totalCount="totalNum"
+        ></PlayerTable>
       </el-col>
       <el-col :span="18" class="black">
         <el-row>
@@ -118,6 +121,7 @@
   </transition>
   <Dialog
     :dialogVisible="waringDialog"
+    title="警告"
     :content="warningContent"
     @closeDialog="closeDialog"
   ></Dialog>
@@ -153,6 +157,7 @@ export default {
     const formRef = ref(null);
     const playerTitle = ref(null);
     const playerContent = ref(null);
+    const totalNum = ref(0);
     const data = reactive({
       formData: props.formData,
       turnPage: {
@@ -279,6 +284,7 @@ export default {
       data.player.prizes = [];
       playerloading.value = true;
       playerloadingText.value = "請新增目前玩家後開始遊戲";
+      totalNum.value = data.turnPage.totalNum;
     };
 
     const closeDialog = (val) => {
@@ -308,6 +314,7 @@ export default {
       waringDialog,
       warningContent,
       closeDialog,
+      totalNum,
     };
   },
 };
