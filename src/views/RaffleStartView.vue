@@ -45,6 +45,21 @@
               v-model.number="player.number"
               type="text"
               autocomplete="off"
+              :disabled="!playerloading"
+            />
+          </el-form-item>
+          <el-form-item
+            label="選號（非必填）"
+            prop="text"
+            
+            width="50"
+          >
+            <el-input
+              v-model="player.numberlist"
+              type="text"
+              autocomplete="off"
+              placeholder="輸入籤號(ex:2,4,10)"
+              :disabled="!playerloading"
             />
           </el-form-item>
           <el-form-item>
@@ -173,6 +188,7 @@ export default {
         name: "",
         number: 1,
         prizes: [],
+        numberlist:""
       },
       playerlist: [],
       openedIndex: [],
@@ -220,10 +236,10 @@ export default {
       }
 
       data.turnPage.data[index].opened = true;
-      show_gif.value = false;
-      if (data.turnPage.data[index].note) {
-        show_gif.value = true;
-      }
+      // show_gif.value = false;
+      // if (data.turnPage.data[index].note) {
+      //   show_gif.value = true;
+      // }
       data.player.prizes.push(val.name);
       let now_prize = data.player.prizes.join(",");
       playerContent.value =
@@ -235,25 +251,24 @@ export default {
         data.player.number +
         ")";
       prizeData.value = countPrize();
-      setTimeout(() => {
-        modalVisible.value = true;
-        hightlight_title.value = val.name;
-        hightlight_content.value = val.sub_name;
+      closeModel();
+      // setTimeout(() => {
+        // modalVisible.value = true;
+        // hightlight_title.value = val.name;
+        // hightlight_content.value = val.sub_name;
         // 自動消失
         // setTimeout(() => {
         //   modalVisible.value = false;
         // }, "4000");
-      }, "500");
-      if (data.player.number - data.player.prizes.length == 0) {
-        playerloading.value = false;
-      }
+      // }, "500");
+      // if (data.player.number - data.player.prizes.length == 0) {
+      //   playerloading.value = false;
+      // }
     };
 
     const closeModel = () => {
       modalVisible.value = false;
       if (data.player.number - data.player.prizes.length == 0) {
-        playerloading.value = true;
-        playerloadingText.value = "本次結束，請新增下一位玩家";
         playerCompleted();
       }
     };
@@ -266,7 +281,8 @@ export default {
       }
       const item = JSON.parse(JSON.stringify(data.player));
       let count = 0;
-      playerTitle.value = "**" + item.name + "** 正在抽!";
+      playerTitle.value = "**" + item.name + "** 正在抽! ";
+      if(item.numberlist.length>0) playerTitle.value += "/選號："+ item.numberlist;
       playerContent.value =
         "目前戰況：(" + (item.number - count) + "/" + item.number + ")";
       data.player.index = data.playerlist.length + 1;
@@ -282,6 +298,7 @@ export default {
       data.player.name = "";
       data.player.number = 0;
       data.player.prizes = [];
+      data.player.numberlist = "";
       playerloading.value = true;
       playerloadingText.value = "請新增目前玩家後開始遊戲";
       totalNum.value = data.turnPage.totalNum;
