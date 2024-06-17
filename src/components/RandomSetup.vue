@@ -48,12 +48,7 @@ export default {
         clearInterval(timer);
         timer = null;
         waringDialog.value = true;
-        warningContent.value =
-          "！恭喜第" +
-          currentNumber.value +
-          "號：" +
-          data.players[currentNumber.value - 1] +
-          "！";
+        warningContent.value = "！恭喜"+currentNumber.value+"號！";
       }, 3500); // 3秒後自動停止
     };
 
