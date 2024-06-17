@@ -74,7 +74,7 @@ export default {
     };
 
     const handleDelete = (index) => {
-      data.prizeData.pop(index);
+      data.prizeData.splice(index,1)
     };
 
     const removeDataList = () => {
